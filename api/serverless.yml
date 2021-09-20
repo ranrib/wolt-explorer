@@ -1,0 +1,21 @@
+service: wolt-explorer-api
+
+provider:
+  name: aws
+  runtime: python3.7
+  lambdaHashingVersion: '20201221'
+
+custom:
+  pythonRequirements:
+    pythonBin: python3
+
+functions:
+  get-resteraunts:
+    handler: handler.get_resteraunts
+    events:
+      - httpApi:
+          path: /
+          method: get
+
+plugins:
+  - serverless-python-requirements

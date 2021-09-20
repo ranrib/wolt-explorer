@@ -1,0 +1,16 @@
+{
+  "name": "wolt-explorer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "scottyjs": "^1.10.2",
+    "serverless": "^2.59.0",
+    "serverless-python-requirements": "^5.1.1"
+  }
+}

@@ -27,7 +27,7 @@ function App() {
       `${apiUrl}/?lat=${locationData.lat}&lon=${locationData.lon}`,
     );
     const categoriesSorted = Array.from(
-      new Set(response.data.sections[0].items.map(({ venue }) => venue.tag)),
+      new Set(response.data.sections[0].items.map(({ venue }) => venue.tags[0])),
     );
     categoriesSorted.sort();
     setCategories(categoriesSorted.filter((name) => name).map((name) => ({
@@ -50,7 +50,7 @@ function App() {
 
   const filteredResteraunts = restaurants.filter((rest) => (
     rest.venue.name.toLowerCase().includes(search.toLowerCase())
-        || (rest.venue.tag && rest.venue.tag.toLowerCase().includes(search.toLowerCase()))
+        || (rest.venue.tags[0] && rest.venue.tags[0].toLowerCase().includes(search.toLowerCase()))
   ));
 
   const categoryColors = categories.reduce((obj, item, ind) => ({

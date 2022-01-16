@@ -106,17 +106,17 @@ const columns = (latitude, longitude, categories, search, categoryColors) => [
   },
   {
     title: 'Tag',
-    dataIndex: ['venue', 'tag'],
-    render: (tag) => (tag
+    dataIndex: ['venue', 'tags'],
+    render: (tags) => (tags
       ? (
-        <Tag className="category-tag" color={categoryColors[tag]}>
-          <Highlighter searchWords={search.split(' ')} autoEscape textToHighlight={tag} />
+        <Tag className="category-tag" color={categoryColors[tags[0]]}>
+          <Highlighter searchWords={search.split(' ')} autoEscape textToHighlight={tags[0]} />
         </Tag>
       ) : ''
     ),
     filters: categories,
     onFilter: (value, row) => (
-      row.venue.tag && row.venue.tag.toString().toLowerCase() === value.toLowerCase()
+      row.venue.tags[0] && row.venue.tags[0].toString().toLowerCase() === value.toLowerCase()
     ),
     className: 'tag-column',
   },

@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Table, Input, Button, Tooltip,
+  Table, Input, Button, Tooltip, Modal,
 } from 'antd';
 import axios from 'axios';
-import { AimOutlined, GithubOutlined } from '@ant-design/icons';
 import {
-  apiUrl, defaultLat, defaultLon, colors,
+  AimOutlined,
+  GithubOutlined,
+  InfoCircleOutlined,
+  FilterOutlined,
+  SortAscendingOutlined,
+} from '@ant-design/icons';
+import {
+  apiUrl, defaultLat, defaultLon, formatCategory,
 } from './consts';
 import columns from './columns';
 import './App.css';
@@ -19,6 +25,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState({ lat: defaultLat, lon: defaultLon });
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const fetchData = useCallback(async (locationData) => {
     if (fetched) return;
@@ -31,7 +38,7 @@ function App() {
     );
     categoriesSorted.sort();
     setCategories(categoriesSorted.filter((name) => name).map((name) => ({
-      text: name,
+      text: formatCategory(name),
       value: name,
     })));
     setRestaurants(response.data.sections[0].items);
@@ -53,10 +60,17 @@ function App() {
         || (rest.venue.tags[0] && rest.venue.tags[0].toLowerCase().includes(search.toLowerCase()))
   ));
 
-  const categoryColors = categories.reduce((obj, item, ind) => ({
-    ...obj,
-    [item.text.toLowerCase()]: colors[ind],
-  }), {});
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <div className="App">
@@ -64,14 +78,17 @@ function App() {
       <div className="navbar">
         <Input className="input-search" placeholder="Search for restaurants..." disabled={loading} value={search} onChange={(e) => setSearch(e.target.value)} allowClear />
         <Tooltip title={`Location is ${locationEnabled ? 'enabled' : 'disabled'}`} placement="left">
-          <Button className="location-indication" type="dashed" icon={<AimOutlined style={{ color: locationEnabled ? '#23C552' : '#F84F31' }} />} />
+          <div style={{ display: 'contents' }}>
+            <Button className="location-indication" type="dashed" icon={<AimOutlined style={{ color: locationEnabled ? '#23C552' : '#F84F31' }} />} />
+            <Button onClick={showModal} className="information" type="dashed" icon={<InfoCircleOutlined />} />
+          </div>
         </Tooltip>
       </div>
       <Table
         size="small"
         rowKey={(row) => row.venue.id}
         dataSource={filteredResteraunts}
-        columns={columns(location.lat, location.lon, categories, search, categoryColors)}
+        columns={columns(location.lat, location.lon, categories, search)}
         loading={loading}
       />
       <br />
@@ -91,6 +108,23 @@ function App() {
       .
       <br />
       <br />
+      <Modal title="How to use Wolt Explorer" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <p>Wolt Explorer allows advanced filtering and sorting on Wolt restaurants.</p>
+        <p>
+          Searching can be done by typing into the text search,
+          or by filtering data in the table columns.
+          <FilterOutlined />
+        </p>
+        <p>
+          Sorting can be done by clicking on the column header.
+          <SortAscendingOutlined />
+        </p>
+        <p>
+          Distance and delivery time is based on your location.
+          Make sure your location is enabled (Green) or disabled (Red).
+          <AimOutlined />
+        </p>
+      </Modal>
     </div>
   );
 }

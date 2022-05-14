@@ -19,6 +19,12 @@
   cursor: unset;
 }
 
+.information {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
 .location-indication:hover {
   color: rgba(0, 0, 0, 0.85);
   border-color: #d9d9d9;

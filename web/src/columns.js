@@ -7,8 +7,9 @@ import {
 import {
   CheckCircleOutlined, CloseCircleOutlined, DollarTwoTone, DollarOutlined, StarFilled,
 } from '@ant-design/icons';
+import { formatCategory } from './consts';
 
-const columns = (latitude, longitude, categories, search, categoryColors) => [
+const columns = (latitude, longitude, categories, search) => [
   {
     title: 'Restaurant',
     dataIndex: ['venue', 'name'],
@@ -109,8 +110,8 @@ const columns = (latitude, longitude, categories, search, categoryColors) => [
     dataIndex: ['venue', 'tags'],
     render: (tags) => (tags
       ? (
-        <Tag className="category-tag" color={categoryColors[tags[0]]}>
-          <Highlighter searchWords={search.split(' ')} autoEscape textToHighlight={tags[0]} />
+        <Tag className="category-tag">
+          <Highlighter searchWords={search.split(' ')} autoEscape textToHighlight={formatCategory(tags[0])} />
         </Tag>
       ) : ''
     ),

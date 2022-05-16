@@ -4,6 +4,9 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+web/yarn.lock
+web/package-lock.json
+api/package-lock.json
 lerna-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

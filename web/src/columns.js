@@ -117,6 +117,7 @@ const columns = (latitude, longitude, categories, search) => [
     ),
     filters: categories,
     filterMode: 'tree',
+    filterSearch: true,
     onFilter: (value, row) => (
       row.venue.tags[0] && row.venue.tags[0].toString().toLowerCase() === value.toLowerCase()
     ),

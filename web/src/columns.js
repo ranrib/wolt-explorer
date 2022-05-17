@@ -60,7 +60,7 @@ const columns = (latitude, longitude, categories, search) => [
   {
     title: 'Distance',
     dataIndex: ['venue', 'location'],
-    render: (location) => `${(getDistance({ latitude, longitude }, { latitude: location[1], longitude: location[0] }) / 1000).toFixed(1)} km`,
+    render: (location, row) => `${(getDistance({ latitude, longitude }, { latitude: location[1], longitude: location[0] }) / 1000).toFixed(1)} km (${row.venue.delivery_price})`,
     sorter: (a, b) => getDistance(
       { latitude, longitude }, { latitude: a.venue.location[1], longitude: a.venue.location[0] },
     ) - getDistance(
@@ -117,7 +117,9 @@ const columns = (latitude, longitude, categories, search) => [
     ),
     filters: categories,
     filterMode: 'tree',
-    filterSearch: true,
+    filterSearch: (input, row) => (
+      row.venue.tags[0].toString().toLowerCase() === input.toLowerCase()
+    ),
     onFilter: (value, row) => (
       row.venue.tags[0] && row.venue.tags[0].toString().toLowerCase() === value.toLowerCase()
     ),

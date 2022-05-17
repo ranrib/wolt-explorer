@@ -98,7 +98,7 @@ function App() {
   return (
     <div className="App">
       <h1>Wolt Explorer</h1>
-      <div className="navba">
+      <div className="navbar">
         <Input
           className="input-search"
           placeholder="Search for restaurants..."
@@ -152,6 +152,7 @@ function App() {
         href="https://github.com/ranrib/wolt-explorer"
       >
         <GithubOutlined />
+        {' '}
         GitHub
       </a>
       .

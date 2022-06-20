@@ -37,13 +37,13 @@ function App() {
     const response = await axios.get(
       `${apiUrl}/?lat=${locationData.lat}&lon=${locationData.lon}`,
     );
-    if (!response.data.sections[0].items) {
-      setError(response.data.sections[0].title);
+    if (!response.data.sections[1].items) {
+      setError(response.data.sections[1].title);
       setLoading(false);
       return;
     }
     const categoriesSorted = Array.from(
-      new Set(response.data.sections[0].items.map(({ venue }) => venue.tags[0])),
+      new Set(response.data.sections[1].items.map(({ venue }) => venue.tags[0])),
     );
     categoriesSorted.sort();
     setCategories(
@@ -54,7 +54,7 @@ function App() {
           value: name,
         })),
     );
-    setRestaurants(response.data.sections[0].items);
+    setRestaurants(response.data.sections[1].items);
     setLoading(false);
   }, []);
 

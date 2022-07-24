@@ -1,3 +1,6 @@
+/* eslint-disable max-len */
+/* eslint-disable react/jsx-no-comment-textnodes */
+/* eslint-disable react/button-has-type */
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Table, Input, Button, Tooltip, Modal,
@@ -14,6 +17,7 @@ import {
   apiUrl, defaultLat, defaultLon, formatCategory,
 } from './consts';
 import columns from './columns';
+import RandomRestaurant from './randomRestaurant';
 import './App.css';
 
 let fetched = false;
@@ -25,12 +29,13 @@ function App() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [randIdx, setRandIdx] = useState(0);
   const [location, setLocation] = useState({
     lat: defaultLat,
     lon: defaultLon,
   });
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [isInfoModalVisible, setIsInfoModalVisible] = useState(false);
+  const [isRandomModalVisible, setIsRandomModalVisible] = useState(false);
   const fetchData = useCallback(async (locationData) => {
     if (fetched) return;
     fetched = true;
@@ -83,18 +88,25 @@ function App() {
     && rest.venue.tags[0].toLowerCase().includes(search.toLowerCase())),
   );
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const showInfoModal = () => {
+    setIsInfoModalVisible(true);
+  };
+  const showRandomModal = () => {
+    setIsRandomModalVisible(true);
   };
 
   const handleOk = () => {
-    setIsModalVisible(false);
+    setIsInfoModalVisible(false);
+    setIsRandomModalVisible(false);
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setIsInfoModalVisible(false);
+    setIsRandomModalVisible(false);
   };
-
+  const randomIdx = (max) => {
+    setRandIdx(Math.floor(Math.random() * max));
+  };
   return (
     <div className="App">
       <h1>Wolt Explorer</h1>
@@ -112,6 +124,9 @@ function App() {
           placement="left"
         >
           <div style={{ display: 'contents' }}>
+            <Button onClick={() => { showRandomModal(); randomIdx(filteredResteraunts.length); }} className="random" type="dashed">
+              Random
+            </Button>
             <Button
               className="location-indication"
               type="dashed"
@@ -124,7 +139,7 @@ function App() {
               }
             />
             <Button
-              onClick={showModal}
+              onClick={showInfoModal}
               className="information"
               type="dashed"
               icon={<InfoCircleOutlined />}
@@ -168,7 +183,7 @@ function App() {
       <br />
       <Modal
         title="How to use Wolt Explorer"
-        visible={isModalVisible}
+        visible={isInfoModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
@@ -190,6 +205,32 @@ function App() {
           location is enabled (Green) or disabled (Red).
           <AimOutlined />
         </p>
+      </Modal>
+      <Modal
+        title="Random Restaurant Picker"
+        visible={isRandomModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        {
+          filteredResteraunts.length > 0 ? (
+            <section>
+              <RandomRestaurant filteredResteraunts={filteredResteraunts} idx={randIdx} />
+              <Button
+                onClick={() => { randomIdx(filteredResteraunts.length); }}
+                className="random"
+                type="primary"
+                style={{
+                  display: 'block', width: '21%', marginLeft: 'auto', marginRight: 'auto', marginTop: '3%', marginText: 'center',
+                }}
+              >
+                Randomize
+              </Button>
+            </section>
+          ) : (
+            ''
+          )
+        }
       </Modal>
     </div>
   );

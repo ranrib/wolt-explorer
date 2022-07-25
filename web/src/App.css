@@ -24,6 +24,11 @@
   margin-bottom: 5px;
   margin-left: 5px;
 }
+.random {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
 
 .location-indication:hover {
   color: rgba(0, 0, 0, 0.85);
@@ -78,4 +83,10 @@ h1 {
   to {
     transform: rotate(360deg);
   }
+}
+.random-restaurant{
+  color: black;
+  line-height: 1;
+  font-size: medium;
+  text-align: center;
 }

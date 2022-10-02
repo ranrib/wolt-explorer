@@ -30,7 +30,11 @@ const columns = (latitude, longitude, categories, search) => [
           && <Tooltip title="New on Wolt"><StarFilled style={{ color: '#ffcd3c' }} /></Tooltip>
         }
         <br />
-        {row.venue.short_description}
+        <Highlighter
+          searchWords={search.split(' ')}
+          autoEscape
+          textToHighlight={row.venue.short_description}
+        />
       </div>
     ),
     filters: [
@@ -69,7 +73,7 @@ const columns = (latitude, longitude, categories, search) => [
     sortDirections: ['ascend', 'descend'],
   },
   {
-    title: 'Price',
+    title: 'Wolt Price',
     dataIndex: ['venue', 'price_range'],
     sorter: (a, b) => a.venue.price_range - b.venue.price_range,
     sortDirections: ['descend', 'ascend'],
@@ -95,12 +99,49 @@ const columns = (latitude, longitude, categories, search) => [
     onFilter: (value, row) => row.venue.price_range === value,
   },
   {
-    title: 'Rating',
+    title: 'Google Price',
+    dataIndex: ['google', 'p'],
+    sorter: (a, b) => a.google.p - b.google.p,
+    sortDirections: ['descend', 'ascend'],
+    render: (range) => <Rate disabled count={4} defaultValue={range} character={({ index }) => (index < range ? <DollarTwoTone twoToneColor="#52c41a" /> : <DollarOutlined />)} />,
+    filters: [
+      {
+        text: <Rate disabled count={4} defaultValue={1} character={({ index }) => (index < 1 ? <DollarTwoTone twoToneColor="#52c41a" /> : <DollarOutlined />)} />,
+        value: 1,
+      },
+      {
+        text: <Rate disabled count={4} defaultValue={2} character={({ index }) => (index < 2 ? <DollarTwoTone twoToneColor="#52c41a" /> : <DollarOutlined />)} />,
+        value: 2,
+      },
+      {
+        text: <Rate disabled count={4} defaultValue={3} character={({ index }) => (index < 3 ? <DollarTwoTone twoToneColor="#52c41a" /> : <DollarOutlined />)} />,
+        value: 3,
+      },
+      {
+        text: <Rate disabled count={4} defaultValue={4} character={({ index }) => (index < 4 ? <DollarTwoTone twoToneColor="#52c41a" /> : <DollarOutlined />)} />,
+        value: 4,
+      },
+    ],
+    onFilter: (value, row) => row.google.p === value,
+  },
+  {
+    title: 'Wolt Rating',
     dataIndex: ['venue', 'rating', 'score'],
     render: (score) => score || '-',
     sorter: (a, b) => {
       const venueA = (a.venue.rating && parseFloat(a.venue.rating.score, 10)) || 0;
       const venueB = (b.venue.rating && parseFloat(b.venue.rating.score, 10)) || 0;
+      return venueA - venueB;
+    },
+    sortDirections: ['descend', 'ascend'],
+  },
+  {
+    title: 'Google Rating',
+    dataIndex: ['google', 'r'],
+    render: (score) => (score ? score * 2 : '-'),
+    sorter: (a, b) => {
+      const venueA = (a.google.r && parseFloat(a.google.r, 10)) || 0;
+      const venueB = (b.google.r && parseFloat(b.google.r, 10)) || 0;
       return venueA - venueB;
     },
     sortDirections: ['descend', 'ascend'],

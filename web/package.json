@@ -26,7 +26,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "deploy": "yarn build && scotty --spa --source ./build --bucket"
+    "deploy": "npm run build && scotty --spa --source ./build --bucket"
   },
   "browserslist": {
     "production": [

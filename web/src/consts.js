@@ -57,6 +57,10 @@ export const emojiCategories = {
   kosher: 'star_of_david',
   smoothie: 'tropical_drink',
   'street food': 'stuffed_flatbread',
+  beyondmeat: 'seedling',
+  drinks: 'cocktail',
+  georgian: 'flag-ge',
+  fruit: 'apple',
 };
 
 export const categoryNameCorrection = {

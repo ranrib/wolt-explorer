@@ -84,6 +84,7 @@ function App() {
 
   const filteredResteraunts = restaurants.filter(
     (rest) => rest.venue.name.toLowerCase().includes(search.toLowerCase())
+      || rest.venue.short_description.toLowerCase().includes(search.toLowerCase())
       || (rest.venue.tags[0]
     && rest.venue.tags[0].toLowerCase().includes(search.toLowerCase())),
   );
